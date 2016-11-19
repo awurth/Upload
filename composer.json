@@ -1,0 +1,22 @@
+{
+    "name": "awurth/upload",
+    "description": "Upload files easily",
+    "keywords": ["upload"],
+    "homepage": "https://github.com/awurth/upload",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexis Wurth",
+            "email": "alexis.wurth57@gmail.com",
+            "homepage": "https://github.com/awurth"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Awurth\\Upload\\": ""
+        }
+    },
+    "require": {
+
+    }
+}
