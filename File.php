@@ -160,10 +160,11 @@ class File
             $this->setUploadDir($uploadDir);
         }
 
-        $this->originalName = $_FILES['name'];
-        $this->errorCode = $_FILES['error'];
-        $this->size = $_FILES['size'];
-        $this->tmpName = $_FILES['tmp_name'];
+        $this->key = $key;
+        $this->originalName = $_FILES[$key]['name'];
+        $this->errorCode = $_FILES[$key]['error'];
+        $this->size = $_FILES[$key]['size'];
+        $this->tmpName = $_FILES[$key]['tmp_name'];
         $this->uploadDir = $uploadDir;
         $this->overwrite = $overwrite;
         $this->required = $required;
@@ -189,9 +190,9 @@ class File
         }
 
         if ($this->newName) {
-            $filename = $this->uploadDir . $this->newName . '.' . $this->getExtension();
+            $filename = $this->uploadDir . DIRECTORY_SEPARATOR . $this->newName . '.' . $this->getExtension();
         } else {
-            $filename = $this->uploadDir . $this->getNameWithExtension();
+            $filename = $this->uploadDir . DIRECTORY_SEPARATOR . $this->getNameWithExtension();
         }
 
         if (!$this->overwrite && file_exists($filename)) {
@@ -213,6 +214,8 @@ class File
      */
     public function validate()
     {
+        $this->validated = true;
+
         if (!$this->required && $this->errorCode == UPLOAD_ERR_NO_FILE) {
             return $this;
         }
@@ -225,7 +228,6 @@ class File
             $constraint->validate($this);
         }
 
-        $this->validated = true;
         return $this;
     }
 
@@ -463,7 +465,7 @@ class File
             throw new \InvalidArgumentException('Directory is not writable');
         }
 
-        $this->uploadDir = rtrim($dir, '/') . DIRECTORY_SEPARATOR;
+        $this->uploadDir = $dir;
         return $this;
     }
 
