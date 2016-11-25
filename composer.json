@@ -15,8 +15,5 @@
         "psr-4": {
             "Awurth\\Upload\\": ""
         }
-    },
-    "require": {
-
     }
 }
