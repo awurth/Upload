@@ -381,7 +381,7 @@ class File
     public function getExtension()
     {
         if (!$this->extension) {
-            $this->extension = strtolower(pathinfo($this->name, PATHINFO_EXTENSION));
+            $this->extension = strtolower(pathinfo($this->originalName, PATHINFO_EXTENSION));
         }
 
         return $this->extension;
