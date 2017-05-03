@@ -454,6 +454,16 @@ class File
     }
 
     /**
+     * Get new file name with extension
+     *
+     * @return string
+     */
+    public function getNewNameWithExtension()
+    {
+        return $this->newName . $this->getExtension();
+    }
+
+    /**
      * Set upload directory
      *
      * @param string $dir
