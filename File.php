@@ -460,7 +460,7 @@ class File
      */
     public function getNewNameWithExtension()
     {
-        return $this->newName . $this->getExtension();
+        return $this->newName . '.' . $this->getExtension();
     }
 
     /**
