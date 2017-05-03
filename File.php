@@ -2,6 +2,10 @@
 
 namespace Awurth\Upload;
 
+use InvalidArgumentException;
+use Exception;
+use finfo;
+
 /**
  * File
  *
@@ -30,12 +34,12 @@ class File
      *
      * @var array
      */
-    protected static $units = array(
+    protected static $units = [
         'b' => 1,
         'k' => 1024,
         'm' => 1048576,
         'g' => 1073741824
-    );
+    ];
 
     /**
      * The key in $_FILES
@@ -153,7 +157,7 @@ class File
     public function __construct($key, $uploadDir = null, $overwrite = true, $required = false)
     {
         if (!isset($_FILES[$key])) {
-            throw new \InvalidArgumentException('No file was found with key: ' . $key);
+            throw new InvalidArgumentException('No file was found with key: ' . $key);
         }
 
         if ($uploadDir) {
@@ -173,12 +177,12 @@ class File
 
     public function upload()
     {
-        if (!$this->required && $this->errorCode == UPLOAD_ERR_NO_FILE) {
+        if (!$this->required && $this->errorCode === UPLOAD_ERR_NO_FILE) {
             return false;
         }
 
         if (!$this->uploadDir) {
-            throw new \Exception('Upload directory not specified');
+            throw new Exception('Upload directory not specified');
         }
 
         if (!$this->validated) {
@@ -216,7 +220,7 @@ class File
     {
         $this->validated = true;
 
-        if (!$this->required && $this->errorCode == UPLOAD_ERR_NO_FILE) {
+        if (!$this->required && $this->errorCode === UPLOAD_ERR_NO_FILE) {
             return $this;
         }
 
@@ -395,7 +399,7 @@ class File
     public function getMimeType()
     {
         if (!$this->mimeType) {
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
             $this->mimeType = $finfo->file($this->tmpName);
         }
 
@@ -458,11 +462,11 @@ class File
     public function setUploadDir($dir)
     {
         if (!is_dir($dir)) {
-            throw new \InvalidArgumentException('Directory does not exist');
+            throw new InvalidArgumentException('Directory does not exist');
         }
 
         if (!is_writable($dir)) {
-            throw new \InvalidArgumentException('Directory is not writable');
+            throw new InvalidArgumentException('Directory is not writable');
         }
 
         $this->uploadDir = $dir;
@@ -525,7 +529,7 @@ class File
      * Convert human readable file size (e.g. "10K" or "3M") into bytes
      *
      * @param  string $input
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return int
      */
     public static function humanReadableToBytes($input)
@@ -533,7 +537,7 @@ class File
         $number = (int) $input;
         $unit = strtolower(substr($input, -1));
         if (!isset(self::$units[$unit])) {
-            throw new \InvalidArgumentException('Unknown file size unit');
+            throw new InvalidArgumentException('Unknown file size unit');
         }
 
         return $number = $number * self::$units[$unit];
